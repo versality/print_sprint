@@ -1,4 +1,4 @@
-name: Build binaries for MacOS and Linux
+name: Build binaries for MacOS and
 
 on:
   push:
@@ -16,8 +16,6 @@ jobs:
             artifact-name: native-image-mac
           - os: ubuntu-latest
             artifact-name: native-image-linux
-
-    runs-on: macos-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
