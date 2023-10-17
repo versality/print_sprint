@@ -2,10 +2,19 @@
 ### Setup
 1. Copy .env.example to .env
 2. Fill in the variables
+3. Run `source .env`
 
 ### Usage
 #### Dev
-> clojure -M -m print-sprint.core --from 2023-09-26 --to 2023-10-10 --sprints 5 --ids xxxxx,xxxxx,xxxxx --board-id X
+```sh
+clojure -M -m print-sprint.core --from 2023-09-26 --to 2023-10-10 --sprints 5 --ids xxxxx,xxxxx,xxxxx --board-id X
+```
+#### Binary
+```sh
+./print_sprint --from 2023-09-26 --to 2023-10-10 --sprints 5 --ids xxxxx,xxxxx,xxxxx --board-id X
+```
+
+#### Output
 ```
 SageHR Report
 | :employee_id | :days |       :name |
@@ -24,5 +33,3 @@ Jira Report
 |       :127 |       72.5 |       55.5 |
 Suggested story points for next sprint: 39
 ```
-#### Binary
-> ./print_sprint --from 2023-09-26 --to 2023-10-10 --sprints 5 --ids xxxxx,xxxxx,xxxxx --board-id X
