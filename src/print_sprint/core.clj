@@ -2,7 +2,8 @@
   (:require [print-sprint.sagehr :as sagehr]
             [print-sprint.jira :as jira]
             [clojure.string :as string]
-            [clojure.pprint :refer [print-table]]))
+            [clojure.pprint :refer [print-table]])
+  (:gen-class))
 
 ;; clojure -M -m print-sprint.core --from 2023-09-26 --to 2023-10-10 --sprints 5 --ids 1198812,2061438,2164546,805320,2887309,2407647 --board-id 85
 
