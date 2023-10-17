@@ -5,13 +5,10 @@
             [clojure.pprint :refer [print-table]])
   (:gen-class))
 
-;; clojure -M -m print-sprint.core --from 2023-09-26 --to 2023-10-10 --sprints 5 --ids 1198812,2061438,2164546,805320,2887309,2407647 --board-id 85
-
 ;; Sage HR configuration
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (def sagehr-subdomain (delay (System/getenv "SAGEHR_SUBDOMAIN")))
 (def sagehr-api-key (delay (System/getenv "SAGEHR_API_KEY")))
-
 
 ;; Jira configuration
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -45,8 +42,7 @@
         board-id (Integer/parseInt (parsed-args "--board-id"))
         employee-ids (set (map #(Integer/parseInt %) (string/split employee-ids-args #",")))
         sagehr-report (sagehr/report employee-ids @sagehr-api-key @sagehr-subdomain to from)
-        jira-report (jira/report @jira-subdomain @email @jira-api-key board-id sprints)
-        ]
+        jira-report (jira/report @jira-subdomain @email @jira-api-key board-id sprints)]
     (println (str "Period: " from " - " to))
     (print "SageHR Report")
     (print-table sagehr-report)
