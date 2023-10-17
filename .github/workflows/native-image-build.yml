@@ -1,0 +1,54 @@
+name: Build binaries for MacOS and Linux
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+        include:
+          - os: macos-latest
+            artifact-name: native-image-mac
+          - os: ubuntu-latest
+            artifact-name: native-image-linux
+
+    runs-on: macos-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Clojure
+      run: brew install clojure/tools/clojure
+
+    - name: Set up GraalVM
+      uses: DeLaGuardo/setup-graalvm@4
+      with:
+        graalvm-version: '23.0.2'
+        java-version: 'java17'
+
+    - name: Install native-image
+      run: gu install native-image
+
+    - name: Build JAR
+      run: clj -T:build uber
+
+    - name: Extract version and lib
+      run: |
+        echo "VERSION=$(clj -e '(require (quote build)) (println @build/version)')" >> $GITHUB_ENV
+        echo "LIB=$(clj -e '(require (quote build)) (println (name @build/lib))')" >> $GITHUB_ENV
+
+    - name: Generate native image
+      run: native-image -jar target/$LIB-$VERSION-standalone.jar
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.artifact-name }}
+        path: target/$LIB-$VERSION-standalone
+
+
